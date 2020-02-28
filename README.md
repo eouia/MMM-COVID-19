@@ -1,12 +1,13 @@
 # MMM-COVID-19
-MM module for COVID-19 virus pandemic
+MM module for current COVID-19 virus status.
 
 ## Credits
 This data is derived from [Johns Hopkins University Center for Systems Science and Engineering (JHU CCSE)](https://github.com/CSSEGISandData/COVID-19) via API by [Laeyoung / COVID-19-API](https://github.com/Laeyoung/COVID-19-API)
+
 Original data is located [here](https://github.com/CSSEGISandData/COVID-19/tree/master/csse_covid_19_data/csse_covid_19_daily_reports)
 
 ## Screenshot
-![]()
+![](https://raw.githubusercontent.com/eouia/MMM-COVID-19/master/covid.png)
 
 ## Install
 ```sh
@@ -19,8 +20,8 @@ git clone https://github.com/eouia/MMM-COVID-19
 ```js
 {
   module: "MMM-COVID-19",
-	header: "COVID-19",
-	position: "top_left",
+  header: "COVID-19",
+  position: "top_left",
   config:{}
 }
 ```
