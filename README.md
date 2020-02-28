@@ -19,8 +19,8 @@ git clone https://github.com/eouia/MMM-COVID-19
 ```js
 {
   module: "MMM-COVID-19",
-	header: "COVID-19",
-	position: "top_left",
+  header: "COVID-19",
+  position: "top_left",
   config:{}
 }
 ```
