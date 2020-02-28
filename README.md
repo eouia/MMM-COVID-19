@@ -1,5 +1,5 @@
 # MMM-COVID-19
-MM module for COVID-19 virus pandemic
+MM module for current COVID-19 virus status.
 
 ## Credits
 This data is derived from [Johns Hopkins University Center for Systems Science and Engineering (JHU CCSE)](https://github.com/CSSEGISandData/COVID-19) via API by [Laeyoung / COVID-19-API](https://github.com/Laeyoung/COVID-19-API)
