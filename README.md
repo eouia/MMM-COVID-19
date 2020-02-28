@@ -6,7 +6,7 @@ This data is derived from [Johns Hopkins University Center for Systems Science a
 Original data is located [here](https://github.com/CSSEGISandData/COVID-19/tree/master/csse_covid_19_data/csse_covid_19_daily_reports)
 
 ## Screenshot
-![]()
+![](https://raw.githubusercontent.com/eouia/MMM-COVID-19/master/covid.png)
 
 ## Install
 ```sh
