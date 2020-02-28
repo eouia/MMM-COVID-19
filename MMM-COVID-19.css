@@ -1,0 +1,77 @@
+@keyframes covidRotate {
+  0%   {opacity:0.1;}
+  100% {opacity:1;}
+}
+
+.covid {
+  width:100%;
+  max-width:400px;
+  min-width:300px;
+  line-height:125%;
+}
+
+.covid .item {
+  box-sizing: border-box;
+  border-radius: 8px;
+  padding:8px;
+  background-color:#002200;
+  margin-bottom:8px;
+}
+
+.covid .item.rotate {
+  animation-name: covidRotate;
+  animation-duration: 1s;
+}
+
+.covid .item.pinned {
+
+}
+
+.covid .item.total {
+
+}
+
+.covid .location {
+  color:#99CC00;
+  font-weight:bold;
+  font-size: 1.3vw;
+}
+
+.covid .numbers {
+  font-size: 1vw;
+  display: flex;
+  flex-direction: row;
+  justify-content: space-around;
+}
+
+.covid .numbers .number {
+  text-align:center;
+  width:30%;
+}
+
+.covid .numbers .confirmed {
+  color: #FF3333;
+  text-align:left;
+}
+
+.covid .numbers .deaths {
+  color: #999;
+}
+
+.covid .numbers .recovered {
+  color: #3366FF;
+  text-align:right;
+}
+
+
+.covid .numbers .confirmed::before {
+  content: "C: "
+}
+
+.covid .numbers .deaths::before {
+  content: "D: "
+}
+
+.covid .numbers .recovered::before {
+  content: "R: "
+}
