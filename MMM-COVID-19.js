@@ -16,6 +16,7 @@ Module.register("MMM-COVID-19",{
   start: function() {
     this.alreadyLogged = false
     this.scanTimer = null
+    this.drawTimer = null
     this.regionIndex = 0
     this.rawData = null
     this.store = {}
