@@ -2,17 +2,27 @@
 MM module for current COVID-19 virus status.
 
 ## Credits
-This data is derived from [Johns Hopkins University Center for Systems Science and Engineering (JHU CCSE)](https://github.com/CSSEGISandData/COVID-19) via API by [Laeyoung / COVID-19-API](https://github.com/Laeyoung/COVID-19-API)
-
-Original data is located [here](https://github.com/CSSEGISandData/COVID-19/tree/master/csse_covid_19_data/csse_covid_19_daily_reports)
+This data is derived from [Johns Hopkins University Center for Systems Science and Engineering (JHU CCSE)](https://github.com/CSSEGISandData/COVID-19)
 
 ## Screenshot
 ![](https://raw.githubusercontent.com/eouia/MMM-COVID-19/master/covid.png)
+
+## New Updates
+### **`2.0.0` (2020-03-04)**
+- Whole new build. (`npm install` is needed to update)
+- Removed: depedency of external API. Data is derived from original source directly.
+- Removed: some overspec config options.
+- Added: past 7-days bar graph.
+- Added: new confirmed, new deaths, new recovered of 1 day before (... of update date)
+- Added : info section, last reported time, distance from me.
+- Changed : multi pinned. pin key format changed.
+- Chagned : more controllable by CSS.
 
 ## Install
 ```sh
 cd ~/MagicMirror/modules
 git clone https://github.com/eouia/MMM-COVID-19
+npm install
 ```
 
 ## Config
@@ -30,33 +40,37 @@ git clone https://github.com/eouia/MMM-COVID-19
 
 ```js
 config: {
-  scanInterval: 1000 * 60 * 60 * 12,
-  rotateInterval: 1000 * 5,
-  detailProvince: false,
-  pinned: ["Others", "Diamond Princess cruise ship"],
-  logProvinceCountry: false,
-  logOnce: true,
-  sortOrder: null,
+  debug:true,
+  scanInterval: 1000 * 60 * 60 * 3,
+  rotateInterval: 1000 * 5, // 0 means no rotate
+  pinned: [ "Diamond Princess cruise ship, Others", "Mainland China"],
+  myPosition: {latitude:50.0836, longitude:8.4694, metric:"km",}, //or null. // reserved for later.
+  reportTimeFormat: "YYYY.MM.DD hh a"
 }
 ```
 - **`scanInterval`** : ms. Original data is updated once per day. So too frequent scanning is not needed.
 - **`rotateInterval`** : ms. Interval for rotating region infected.
-- **`detailProvice`** : If `true`, the data from provinces of country (US, China, Canada) will be shown. If `false`, sum of country will be shown.
-- **`pinned`** : If not `null`, your second slot will show `pinned region`. The structure is `[COUNTRY_NAME, PROVINCE_NAME]`. When `PROVINCE_NAME` is omitted or invalid, data(if exists, sum of provinces) of `COUNTRY_NAME` will be shown. (e.g: `null`, `["US"]`, `["US", "Seattle, WA"]`)
-> To get `COUNTRY_NAME` and `PROVINCE_NAME`, set `logProvinceCountry:true` then find it from your backend log, or find it directly from https://github.com/CSSEGISandData/COVID-19/tree/master/csse_covid_19_data/csse_covid_19_daily_reports
-
-- **`logProvinceCountry`** : If `true`, `COUNTRY_NAME` and `PROVINCE_NAME` will be listed in your backend log.
-- **`logOnce`** : If `true`, Just log once on start.
-- **`sortOrder`** : Don't mind. but if you want to change the order, assign callback function for sort. Default is ;
-```js
-(a, b)=> {
-  if (b.countryregion !== a.countryregion) return (a.countryregion < b.countryregion) ? -1 : 1
-  if (b.provincestate !== a.provincestate) return (a.provincestate < b.provincestate) ? -1 : 1
-  if (b.confirmed !== a.confirmed) return b.confirmed - a.confirmed
-  if (b.deaths !== a.deaths) return b.deaths - a.deaths
-  return b.recover - a.recover
-}
+- **`pinned`** : Array of pinned regions. If not `null`, your next slots will show `pinned regions`. The structure is
 ```
+[
+  "PROVINCE_NAME, COUNTRY_NAME", // If some region would have province name. `,`(comma) is separator.
+  "COUNTRY_NAME" // OR only country name. When country might have provinces, this will show sum of provinces.
+],
+```
+Example.
+```
+[ "Diamond Princess cruise ship, Others", "Mainland China", "South Korea"]
+```
+> To get `COUNTRY_NAME` and `PROVINCE_NAME`, find it directly from https://github.com/CSSEGISandData/COVID-19/tree/master/csse_covid_19_data/csse_covid_19_daily_reports
+
+
+#### Deprecated options
+> I think this would be overspec. So I removed.
+
+- **`detailProvice`**
+- **`logProvinceCountry`**
+- **`logOnce`**
+- **`sortOrder`**
 
 
 ## Don't Panic! This is not Z-Virus...

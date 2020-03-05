@@ -1,3 +1,27 @@
+.covid { /* default values which are used frequently or dependently */
+  --minWidth: 350px;
+  --mainBgColor: #112211;
+  --mainTitleColor: #CCFF33;
+  --normalColor:#FFF;
+  --confirmedColor: #FF3333;
+  --deathsColor: #CCC;
+  --recoveredColor: #3366FF;
+}
+
+/* If you want to hide some part, try like this in your `css/custom.css` */
+/*
+.covid .deaths { // want to hide all `deaths`
+  display: none;
+}
+
+.covid .info .distance { // want to hide distance info
+  display: none;
+}
+*/
+
+
+
+
 @keyframes covidRotate {
   0%   {opacity:0.1;}
   100% {opacity:1;}
@@ -5,16 +29,16 @@
 
 .covid {
   width:100%;
-  max-width:400px;
-  min-width:300px;
-  line-height:125%;
+  min-width: var(--minWidth);
+  line-height:120%;
+  color: var(--normalColor);
 }
 
 .covid .item {
   box-sizing: border-box;
   border-radius: 8px;
   padding:8px;
-  background-color:#002200;
+  background-color: var(--mainBgColor);
   margin-bottom:8px;
 }
 
@@ -31,10 +55,44 @@
 
 }
 
-.covid .location {
-  color:#99CC00;
+.covid .title {
+  color: var(--mainTitleColor);
   font-weight:bold;
   font-size: 1.3vw;
+  line-height: 110%;
+}
+
+.covid .info {
+  display:flex;
+  flex-direction: row;
+  justify-content: space-between;
+  line-height:110%;
+}
+
+.covid .info .distance {
+  font-size:0.9vw;
+  font-weight:normal;
+}
+
+.covid .info .lastreported {
+  font-size:0.9vw;
+  font-weight:normal;
+}
+
+.covid .info .lastreported::before {
+  content: "Last Reported: "
+}
+
+.covid .info .distance::before {
+  content: "Distance: "
+}
+
+.covid .info .distance.km::after {
+  content: " km"
+}
+
+.covid .info .distance.mile::after {
+  content: " mi."
 }
 
 .covid .numbers {
@@ -42,6 +100,16 @@
   display: flex;
   flex-direction: row;
   justify-content: space-around;
+  line-height:120%;
+  margin-bottom: 4px;
+}
+
+.covid .numbers.current {
+  /* display: none; */
+}
+
+.covid .numbers.new {
+  /* display: none; */
 }
 
 .covid .numbers .number {
@@ -50,28 +118,121 @@
 }
 
 .covid .numbers .confirmed {
-  color: #FF3333;
+  color: var(--confirmedColor);
   text-align:left;
 }
 
 .covid .numbers .deaths {
-  color: #999;
+  color: var(--deathsColor);
 }
 
 .covid .numbers .recovered {
-  color: #3366FF;
+  color: var(--recoveredColor);
   text-align:right;
 }
 
 
-.covid .numbers .confirmed::before {
+.covid .numbers.current .confirmed::before {
   content: "C: "
 }
 
-.covid .numbers .deaths::before {
+.covid .numbers.current .deaths::before {
   content: "D: "
 }
 
-.covid .numbers .recovered::before {
+.covid .numbers.current .recovered::before {
   content: "R: "
+}
+
+
+.covid .numbers.new .confirmed::before {
+  content: "NC: "
+}
+
+.covid .numbers.new .deaths::before {
+  content: "ND: "
+}
+
+.covid .numbers.new .recovered::before {
+  content: "NR: "
+}
+
+.covid .graph-container {
+  position:relative;
+  width: 100%;
+  height: 50px;
+}
+
+.covid .graph {
+  position:absolute;
+  top:0;
+  left:0;
+  background-color: Black;
+  height: 100%;
+  width: 100%;
+  font-size: 0;
+  color: transparent;
+  text-align: left;
+  vertical-align: top;
+  display: flex;
+  flex-direction: row;
+  flex-wrap: nowrap;
+  justify-content: space-between;
+  align-items: flex-start;
+}
+
+.covid .graph .daily {
+  height: 100%;
+  width: 14%;
+  display: flex;
+  flex-direction: row;
+  flex-wrap: nowrap;
+  justify-content: center;
+  align-items: flex-end;
+  border-right: 1px dotted #666;
+}
+
+.covid .graph .daily:last-child {
+  background-color:#252;
+}
+
+.covid .graph .daily .bar {
+  width:25%;
+  background: linear-gradient(
+    to top,
+    rgba(255,255,255,0.5),
+    rgba(0,0,0,0.5)
+  );
+}
+
+.covid .graph .daily .bar.max {
+  background: none;
+}
+
+.covid .graph .daily .bar.max::before {
+}
+
+.covid .graph .daily .bar.confirmed {
+  background-color: var(--confirmedColor);
+}
+
+.covid .graph .daily .bar.deaths {
+  background-color: var(--deathsColor);
+}
+
+.covid .graph .daily .bar.recovered {
+  background-color: var(--recoveredColor);
+}
+
+.covid .graph-container .maxcount {
+  position: absolute;
+  top: 2px;
+  left: 2px;
+  font-size:12px;
+  color:#CCC;
+  line-height:12px;
+  text-align:left;
+  background-color:rgba(0,0,0,0.5);
+  padding:2px 4px;
+  border-radius: 4px;
 }
