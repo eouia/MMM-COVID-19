@@ -40,7 +40,7 @@ npm install
 
 ```js
 config: {
-  debug:true,
+  debug:false,
   scanInterval: 1000 * 60 * 60 * 3,
   rotateInterval: 1000 * 5, // 0 means no rotate
   pinned: [ "Diamond Princess cruise ship, Others", "Mainland China"],
@@ -48,20 +48,32 @@ config: {
   reportTimeFormat: "YYYY.MM.DD hh a"
 }
 ```
+- **`debug`** : `true` or `false`. To log details.
 - **`scanInterval`** : ms. Original data is updated once per day. So too frequent scanning is not needed.
 - **`rotateInterval`** : ms. Interval for rotating region infected.
 - **`pinned`** : Array of pinned regions. If not `null`, your next slots will show `pinned regions`. The structure is
-```
+```js
 [
   "PROVINCE_NAME, COUNTRY_NAME", // If some region would have province name. `,`(comma) is separator.
   "COUNTRY_NAME" // OR only country name. When country might have provinces, this will show sum of provinces.
 ],
 ```
 Example.
-```
-[ "Diamond Princess cruise ship, Others", "Mainland China", "South Korea"]
+```js
+pinned: ["Diamond Princess cruise ship, Others", "Mainland China", "South Korea"],
 ```
 > To get `COUNTRY_NAME` and `PROVINCE_NAME`, find it directly from https://github.com/CSSEGISandData/COVID-19/tree/master/csse_covid_19_data/csse_covid_19_daily_reports
+
+- **`myPosition`** : `Object`(`{...}`) or `null`. You can set `myPosition` to get the distance to the region.
+```js
+myPosition: {
+  latitude: 50.0836,
+  longitude: 8.4694,
+  metric: "km", // or `mile`
+},
+```
+- **`reportTimeFormat`** : By example `YYYY.MM.DD h a` will show "2020.03.04 9 am"
+
 
 
 #### Deprecated options

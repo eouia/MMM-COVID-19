@@ -1,6 +1,6 @@
 Module.register("MMM-COVID-19",{
   defaults: {
-    debug:true,
+    debug:false,
     scanInterval: 1000 * 60 * 60 * 3,
     rotateInterval: 1000 * 5, // 0 means no rotate
     pinned: [ "Diamond Princess cruise ship, Others", "Mainland China"],
