@@ -1,27 +1,16 @@
-var NodeHelper = require("node_helper");
+var NodeHelper = require("node_helper")
+const Covid19 = require("./COVID-19.js")
 
 module.exports = NodeHelper.create({
+  start: function () {
+
+  },
   socketNotificationReceived: function (noti, payload) {
-    if (noti == "LOG_PRSTCORE") {
-      var index = {}
-      for (var r of payload) {
-        if (!index.hasOwnProperty(r.countryregion)) {
-          index[r.countryregion] = []
-        }
-        if (!index[r.countryregion].includes(r.provincestate) && r.provincestate) {
-          index[r.countryregion].push(r.provincestate)
-        }
-      }
-      console.log("=================== MMM-COVID-19 Country code ===================")
-      for (var c of Object.keys(index).sort()) {
-        console.log(`COUNTRY:  '${c}'`)
-        if (Array.isArray(index[c]) && index[c].length > 0) {
-          for (var p of index[c].sort()) {
-            console.log(`  PROVINCE:  '${p}'`)
-          }
-        }
-      }
-      console.log("=================================================================")
+    if (noti == "SCAN") {
+      var covid = new Covid19({debug:true})
+      covid.scan((result)=>{
+        if (!result.error) this.sendSocketNotification("SCAN_RESULT", result)
+      })
     }
   }
 })
