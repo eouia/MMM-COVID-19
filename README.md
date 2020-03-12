@@ -22,6 +22,7 @@ This data is derived from [Johns Hopkins University Center for Systems Science a
 ```sh
 cd ~/MagicMirror/modules
 git clone https://github.com/eouia/MMM-COVID-19
+cd MMM-COVID-19
 npm install
 ```
 

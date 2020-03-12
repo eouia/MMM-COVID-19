@@ -70,7 +70,8 @@ Module.register("MMM-COVID-19",{
     var countryTotal = {}
     for (var r of payload.data) {
       var ro = new Region(r, null, {
-        className: "provincestate"
+        className: "provincestate",
+        timeFormat: this.config.reportTimeFormat,
       })
       var country = r.countryregion
       var province = r.provincestate
