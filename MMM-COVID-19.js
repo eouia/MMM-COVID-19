@@ -42,6 +42,7 @@ Module.register("MMM-COVID-19",{
 
   socketNotificationReceived: function(noti, payload) {
     if (noti == "SCAN_RESULT") {
+      console.log(payload)
       this.regulate(payload)
       this.draw()
       this.sendNotification("COVID_UPDATED")
@@ -195,9 +196,9 @@ class Region {
 
   accumulate(obj) {
     for (var day of Object.keys(this.data.series)) {
-      this.data.series[day].confirmed += obj.data.series[day].confirmed
-      this.data.series[day].deaths += obj.data.series[day].deaths
-      this.data.series[day].recovered += obj.data.series[day].recovered
+      if (obj.data.series[day].confirmed) this.data.series[day].confirmed += obj.data.series[day].confirmed
+      if (obj.data.series[day].deaths) this.data.series[day].deaths += obj.data.series[day].deaths
+      if (obj.data.series[day].recovered) this.data.series[day].recovered += obj.data.series[day].recovered
     }
     this.option.accumulated++
   }
