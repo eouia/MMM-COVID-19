@@ -4,7 +4,8 @@ Module.register("MMM-COVID-19",{
     scanInterval: 1000 * 60 * 60 * 3,
     rotateInterval: 1000 * 5, // 0 means no rotate
     pinned: [ "Diamond Princess cruise ship, Others", "Mainland China"],
-    myPosition: {latitude:50.0836, longitude:8.4694, metric:"km",}, //or null. // reserved for later.
+    //myPosition: {latitude:50.0836, longitude:8.4694, metric:"km",}, //or null. // reserved for later.
+    myPosition: null,
     reportTimeFormat: "YYYY.MM.DD hh a"
   },
 
