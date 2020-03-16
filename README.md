@@ -11,7 +11,7 @@ This data is derived from [Johns Hopkins University Center for Systems Science a
 ### **`2.1.0` (2020-03-16)**
 - Whole refactored. (Orignial source format is changed.)
 - Changed: the territory name rule is changed. (See configuration section)
-- Changed: reduction of CPU usage (I hope. See note section also)
+- Changed: reduction of CPU usage (I hope.)
 - added: `drawGraph` option to show graph or not.
 - added: `logTerritory` option to log territory names.
 
