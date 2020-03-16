@@ -3,10 +3,12 @@ Module.register("MMM-COVID-19",{
     debug:false,
     scanInterval: 1000 * 60 * 60 * 3,
     rotateInterval: 1000 * 5, // 0 means no rotate
-    pinned: [ "Diamond Princess cruise ship, Others", "Mainland China"],
+    pinned: [ "World", "China Total"],
     //myPosition: {latitude:50.0836, longitude:8.4694, metric:"km",}, //or null. // reserved for later.
     myPosition: null,
-    reportTimeFormat: "YYYY.MM.DD hh a"
+    reportTimeFormat: "YYYY.MM.DD hh a",
+    drawGraph: true,
+    logTerritory: true
   },
 
   getStyles: function() {
@@ -24,147 +26,58 @@ Module.register("MMM-COVID-19",{
   },
 
   start: function() {
-    this.total = null
-    this.drawTimer = null
-    this.regionIndex = 0
-    this.rawData = null
-    this.regions = []
-    this.countrys = []
+    this.pinned = []
+    this.rotate = null
+    this.sendSocketNotification("INIT", this.config)
   },
 
   notificationReceived: function(noti, payload, sender) {
-    if (noti == "DOM_OBJECTS_CREATED") {
-      this.scan()
-    }
-    if (noti == "COVID19_RESCAN") {
+    if (noti == "COVID19_SCAN") {
       this.scan()
     }
   },
 
   socketNotificationReceived: function(noti, payload) {
-    if (noti == "SCAN_RESULT") {
-      console.log(payload)
-      this.regulate(payload)
-      this.draw()
-      this.sendNotification("COVID_UPDATED")
-    }
-  },
-
-
-  regulate: function(payload) {
-    var sortOrder = (a, b)=>{
-      return (b.data.key < a.data.key) ? 1 : -1
-    }
-    if (!payload.data) {
-      this.log("Invalid payload:", payload)
-    }
-    var total = new Region({
-      name: "World Total",
-      key: "World:*",
-      lastupdate:0,
-      lastseries:0
-    }, payload.seriesKey, {
-      className: "total",
-      timeFormat: this.config.reportTimeFormat,
-    })
-    var regions = []
-    var countryTotal = {}
-    for (var r of payload.data) {
-      var ro = new Region(r, null, {
-        className: "provincestate",
-        timeFormat: this.config.reportTimeFormat,
-      })
-      var country = r.countryregion
-      var province = r.provincestate
-      if (!countryTotal.hasOwnProperty(country)) {
-        countryTotal[country] = new Region({
-          name: country,
-          key: country + ":*",
-          latitude: r.latitude,
-          longitude: r.longitude,
-          lastupdate:0,
-          lastseries: r.lastseries
-        }, payload.seriesKey, {
-          className: "countryregion",
-          timeFormat: this.config.reportTimeFormat,
+    if (noti == "PIN_RESULT") {
+      this.pinned = []
+      for(var r of payload) {
+        var rO = new Region(r, {
+          className: ((r.name == "World") ? "world" : "normal"),
+          drawGraph: this.config.drawGraph,
+          timeFormat: this.config.reportTimeFormat
         })
+        this.pinned.push(rO)
       }
-      countryTotal[country].accumulate(ro)
-      countryTotal[country].updateLastUpdate(r.lastupdate)
-      total.accumulate(ro)
-      total.updateLastUpdate(r.lastupdate)
-      total.data.lastseries = r.lastseries
-      regions.push(ro)
+      this.updateDom()
     }
-    for (var co of Object.values(countryTotal)) {
-      if (co.option.accumulated > 1) {
-        regions.push(co)
-      }
+    if (noti == "ROTATE_RESULT") {
+      this.rotate = new Region(payload, {
+        className: "rotate",
+        drawGraph: this.config.drawGraph,
+        timeFormat: this.config.reportTimeFormat
+      })
+      this.updateDom()
     }
-    this.total = total
-    this.regions = regions.sort(sortOrder)
-  },
-
-  scan: function() {
-    clearTimeout(this.scanTimer)
-    this.sendSocketNotification("SCAN")
-    this.scanTimer = setTimeout(()=>{
-      this.scan()
-    }, this.config.scanInterval)
-  },
-
-  draw: function() {
-    clearTimeout(this.drawTimer)
-    this.updateDom()
-    this.drawTimer = setTimeout(()=>{
-      this.draw()
-    }, this.config.rotateInterval)
   },
 
   getDom: function() {
     var pos = (this.config.myPosition) ? this.config.myPosition : null
     var dom = document.createElement("div")
     dom.classList.add("covid")
-    if (this.total) {
-      dom.appendChild(this.total.draw("total"))
-      for(var name of this.config.pinned) {
-        var pin = this.regions.find((r)=>{
-          if (r.data.name === name) {
-            return true
-          }
-          return false
-        })
-        if (pin) dom.appendChild(pin.draw("pinned", pos))
+    if (Array.isArray(this.pinned) && this.pinned.length > 0) {
+      for(var p of this.pinned) {
+        dom.appendChild(p.draw("pinned", pos))
       }
-      if (this.config.rotateInterval > 0) {
-        dom.appendChild(this.regions[this.regionIndex].draw("rotate", pos))
-        if (this.regionIndex >= this.regions.length - 1) {
-          this.regionIndex = 0
-        } else {
-          this.regionIndex++
-        }
-      }
+    }
+    if (this.rotate) {
+      dom.appendChild(this.rotate.draw("rotate", pos))
     }
     return dom
   },
-
-
-
 })
 
 class Region {
-  constructor(obj=null, seriesKey=null, option={}) {
-    var _initSeries = (keys) => {
-      var ret = {}
-      for (var i of keys) {
-        ret[i] = {
-          confirmed:0,
-          deaths:0,
-          recovered:0,
-        }
-      }
-      return ret
-    }
+  constructor(obj=null, option=null) {
     this.data = {
       key: "",
       lastupdate: 0,
@@ -176,33 +89,13 @@ class Region {
       longitude: null,
       series: {}
     }
-    if (Array.isArray(seriesKey)) this.data.series = _initSeries(seriesKey)
     if (obj) this.data = Object.assign({}, this.data, obj)
     this.option = {
       className: "",
-      accumulated: 0,
       drawGraph: true,
       timeFormat: "YYYY.MM.DD h a"
     }
-
     if (option) this.option = Object.assign({}, this.option, option)
-  }
-
-  setLastReport(x) {
-    this.data.lastReport = x
-  }
-
-  setLastSeries(x) {
-    this.data.lastSeries = x
-  }
-
-  accumulate(obj) {
-    for (var day of Object.keys(this.data.series)) {
-      if (obj.data.series[day].confirmed) this.data.series[day].confirmed += obj.data.series[day].confirmed
-      if (obj.data.series[day].deaths) this.data.series[day].deaths += obj.data.series[day].deaths
-      if (obj.data.series[day].recovered) this.data.series[day].recovered += obj.data.series[day].recovered
-    }
-    this.option.accumulated++
   }
 
   current(status) {
@@ -220,10 +113,6 @@ class Region {
   generateSeriesKey(pastDay=0) {
     var m = moment.utc(this.data.lastseries).subtract(pastDay, "day")
     return m.format("M/D/YY")
-  }
-
-  updateLastUpdate(x) {
-    if (x > this.data.lastupdate) this.data.lastupdate = x
   }
 
   getDistance(lat1, lon1, metric="km") {

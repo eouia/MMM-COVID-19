@@ -226,13 +226,13 @@
 
 .covid .graph-container .maxcount {
   position: absolute;
-  top: 2px;
-  left: 2px;
-  font-size:12px;
+  top: 0px;
+  left: 0px;
+  font-size:10px;
   color:#CCC;
-  line-height:12px;
+  line-height:10px;
   text-align:left;
   background-color:rgba(0,0,0,0.5);
-  padding:2px 4px;
+  padding:1px 2px;
   border-radius: 4px;
 }

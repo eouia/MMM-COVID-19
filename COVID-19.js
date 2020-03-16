@@ -61,7 +61,7 @@ class Covid19 {
       var csvtxt = lastUpdates.contents.toString()
       var jsonObj = await C2J().fromString(csvtxt)
       for (var r of jsonObj) {
-        if (r["Province/State"].trim() == r["Country/Region"].trim()) r["Province/State"] = ""
+        //if (r["Province/State"].trim() == r["Country/Region"].trim()) r["Province/State"] = ""
         var key = this.extractRegionKey(r)
         var ps = r["Province/State"].trim()
         var cr = r["Country/Region"].trim()
@@ -69,7 +69,7 @@ class Covid19 {
           key: key,
           lastupdate: Number(moment(r["Last Update"]).format("x")),
           lastseries: Number(lastDay.format("x")),
-          name: ((ps) ? `${ps}, ${cr}` : cr),
+          name: ((ps && ps.trim() !== cr.trim()) ? `${ps}, ${cr}` : cr),
           provincestate: ps,
           countryregion: cr,
           latitude: Number(r.Latitude),
@@ -81,7 +81,7 @@ class Covid19 {
       const parse = (obj, type) => {
         return new Promise((resolve, reject)=>{
           for (var r of obj) {
-            if (r["Province/State"].trim() == r["Country/Region"].trim()) r["Province/State"] = ""
+            //if (r["Province/State"].trim() == r["Country/Region"].trim()) r["Province/State"] = ""
             var rkey = this.extractRegionKey(r)
             if (!regions.hasOwnProperty(rkey)) continue
             var headers = Object.keys(r)
