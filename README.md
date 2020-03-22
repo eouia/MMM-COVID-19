@@ -4,6 +4,8 @@ MM module for current COVID-19 virus status.
 ## Credits
 This data is derived from [Johns Hopkins University Center for Systems Science and Engineering (JHU CCSE)](https://github.com/CSSEGISandData/COVID-19)
 
+> At this moment(Mar. 22.) US and France don't provide recovered data any more. I'm not sure it will be fixed or not.
+
 ## Screenshot
 ![](https://raw.githubusercontent.com/eouia/MMM-COVID-19/master/covid.png)
 
