@@ -8,7 +8,8 @@ Module.register("MMM-COVID-19",{
     myPosition: null,
     reportTimeFormat: "YYYY.MM.DD hh a",
     drawGraph: true,
-    logTerritory: true
+    logTerritory: true,
+    thousandsSeparator: ""
   },
 
   getStyles: function() {
@@ -44,7 +45,8 @@ Module.register("MMM-COVID-19",{
         var rO = new Region(r, {
           className: ((r.name == "World") ? "world" : "normal"),
           drawGraph: this.config.drawGraph,
-          timeFormat: this.config.reportTimeFormat
+          timeFormat: this.config.reportTimeFormat,
+          separator: this.config.thousandsSeparator
         })
         this.pinned.push(rO)
       }
@@ -54,7 +56,8 @@ Module.register("MMM-COVID-19",{
       this.rotate = new Region(payload, {
         className: "rotate",
         drawGraph: this.config.drawGraph,
-        timeFormat: this.config.reportTimeFormat
+        timeFormat: this.config.reportTimeFormat,
+        separator: this.config.thousandsSeparator
       })
       this.updateDom()
     }
@@ -93,9 +96,14 @@ class Region {
     this.option = {
       className: "",
       drawGraph: true,
-      timeFormat: "YYYY.MM.DD h a"
+      timeFormat: "YYYY.MM.DD h a",
+      separator: null
     }
     if (option) this.option = Object.assign({}, this.option, option)
+  }
+
+  separator(x) {
+    return x.toString().replace(/\B(?=(\d{3})+(?!\d))/g, this.option.separator)
   }
 
   current(status) {
@@ -164,15 +172,15 @@ class Region {
     numbers.classList.add("current")
     var confirmed = document.createElement("div")
     confirmed.classList.add("confirmed", "number")
-    confirmed.innerHTML = this.current("confirmed")
+    confirmed.innerHTML = this.separator(this.current("confirmed"))
     numbers.appendChild(confirmed)
     var deaths = document.createElement("div")
     deaths.classList.add("deaths", "number")
-    deaths.innerHTML = this.current("deaths")
+    deaths.innerHTML = this.separator(this.current("deaths"))
     numbers.appendChild(deaths)
     var recovered = document.createElement("div")
     recovered.classList.add("recovered", "number")
-    recovered.innerHTML = this.current("recovered")
+    recovered.innerHTML = this.separator(this.current("recovered"))
     numbers.appendChild(recovered)
     dom.appendChild(numbers)
     var ext = document.createElement("div")
@@ -180,15 +188,15 @@ class Region {
     ext.classList.add("new")
     var c = document.createElement("div")
     c.classList.add("confirmed", "number")
-    c.innerHTML = this.new("confirmed")
+    c.innerHTML = this.separator(this.new("confirmed"))
     ext.appendChild(c)
     var d = document.createElement("div")
     d.classList.add("deaths", "number")
-    d.innerHTML = this.new("deaths")
+    d.innerHTML = this.separator(this.new("deaths"))
     ext.appendChild(d)
     var r = document.createElement("div")
     r.classList.add("recovered", "number")
-    r.innerHTML = this.new("recovered")
+    r.innerHTML = this.separator(this.new("recovered"))
     ext.appendChild(r)
     dom.appendChild(ext)
     if (this.option.drawGraph) {
@@ -234,7 +242,7 @@ class Region {
         n.dataset.count = o[item]
         var rat =  (Math.round(o[item] / max * 10000) / 100)
         n.style.height = ((o[item] == 0) ? 0 : rat) + "%"
-        n.innerHTML = o[item]
+        n.innerHTML = this.separator(o[item])
         if (o[item] == max) n.classList.add("max")
         cont.appendChild(n)
       }
@@ -243,7 +251,7 @@ class Region {
     container.appendChild(graph)
     var m = document.createElement("div")
     m.classList.add("maxcount")
-    m.innerHTML = max
+    m.innerHTML = this.separator(max)
     container.appendChild(m)
     return container
   }

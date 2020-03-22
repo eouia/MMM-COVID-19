@@ -8,22 +8,10 @@ This data is derived from [Johns Hopkins University Center for Systems Science a
 ![](https://raw.githubusercontent.com/eouia/MMM-COVID-19/master/covid.png)
 
 ## New Updates
-### **`2.1.0` (2020-03-16)**
-- Whole refactored. (Orignial source format is changed.)
-- Changed: the territory name rule is changed. (See configuration section)
-- Changed: reduction of CPU usage (I hope. See note section also)
-- added: `drawGraph` option to show graph or not.
-- added: `logTerritory` option to log territory names.
+### **`2.1.1` (2020-03-22)**
+- Fixed: Minor fix for safe initialization for regions which has no data.
+- Added: thousands separator for numbers
 
-### **`2.0.0` (2020-03-04)**
-- Whole new build. (`npm install` is needed to update)
-- Removed: depedency of external API. Data is derived from original source directly.
-- Removed: some overspec config options.
-- Added: past 7-days bar graph.
-- Added: new confirmed, new deaths, new recovered of 1 day before (... of update date)
-- Added : info section, last reported time, distance from me.
-- Changed : multi pinned. pin key format changed.
-- Chagned : more controllable by CSS.
 
 ## Install
 ```sh
@@ -56,7 +44,8 @@ config: {
   //myPosition: {latitude:50.0836, longitude:8.4694, metric:"km",}, //or null. // reserved for later.
   reportTimeFormat: "YYYY.MM.DD hh a",
   drawGraph: true,
-  logTerritory: true
+  logTerritory: true,
+  thousandsSeparator: "",
 }
 ```
 - **`debug`** : `true` or `false`. To log details.
@@ -74,6 +63,7 @@ myPosition: {
 - **`reportTimeFormat`** : By example `YYYY.MM.DD h a` will show "2020.03.04 9 am"
 - **`drawGraph`** : `true` for draw graph. `false` for not. If you feel some CPU burden, set this to `false`.
 - **`logTerritory`** : `true` for log territory name. Sometimes Original data source format is changed. So, will log in every scan time.
+- **`thousandsSeparator`** : By default, none. If you set `,`, `123456` will be displayed like `123,456`
 
 
 ### Territory naming rule (since 2020.03.16)
@@ -125,7 +115,23 @@ I've refactored to reduce CPU and memory usage. But if you still feel some issue
 - **`logOnce`**
 - **`sortOrder`**
 
+## UPDATE HISTORY
+### **`2.1.0` (2020-03-16)**
+- Whole refactored. (Orignial source format is changed.)
+- Changed: the territory name rule is changed. (See configuration section)
+- Changed: reduction of CPU usage (I hope. See note section also)
+- added: `drawGraph` option to show graph or not.
+- added: `logTerritory` option to log territory names.
 
+### **`2.0.0` (2020-03-04)**
+- Whole new build. (`npm install` is needed to update)
+- Removed: depedency of external API. Data is derived from original source directly.
+- Removed: some overspec config options.
+- Added: past 7-days bar graph.
+- Added: new confirmed, new deaths, new recovered of 1 day before (... of update date)
+- Added : info section, last reported time, distance from me.
+- Changed : multi pinned. pin key format changed.
+- Chagned : more controllable by CSS.
 
 
 

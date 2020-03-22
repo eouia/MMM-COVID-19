@@ -37,7 +37,11 @@ class Covid19 {
     var initSeries = () => {
       var ret = {}
       for (var i of days) {
-        ret[i] = {}
+        ret[i] = {
+          confirmed:0,
+          deaths:0,
+          recovered:0
+        }
       }
       return ret
     }
