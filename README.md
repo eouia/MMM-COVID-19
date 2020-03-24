@@ -1,10 +1,27 @@
 # MMM-COVID-19
-MM module for current COVID-19 virus status.
+MM module for current COVID-19 virus status. (Will be deprecated, use alternative)
+
+## NOTICE FOR NOT SUPPORTING ANYMORE
+- When I created this module, there was no COVID-19 related modules, so I made it by myself. This module consume data from the FIRST original root source from [Johns Hopkins University Center for Systems Science and Engineering (JHU CCSE)](https://github.com/CSSEGISandData/COVID-19) But JHU CCSE changes its data format too often and without notice, so this module is not stable. (I'm very disappointing about JHU CCSS data management)
+
+And at this moment, there are at least two working COVID-19 related modules in MagicMirror. So I'll quit to support this module. Use alternatives.
+- [MyCovid19](https://github.com/sdetweil/MyCovid19)
+- [MMM-COVID19](https://github.com/bibaldo/MMM-COVID19)
+
+Sorry, and thank you for things.
+
+
+
 
 ## Credits
 This data is derived from [Johns Hopkins University Center for Systems Science and Engineering (JHU CCSE)](https://github.com/CSSEGISandData/COVID-19)
 
 > At this moment(Mar. 22.) US and France don't provide recovered data any more. I'm not sure it will be fixed or not.
+
+
+
+
+
 
 ## Screenshot
 ![](https://raw.githubusercontent.com/eouia/MMM-COVID-19/master/covid.png)
